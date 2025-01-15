@@ -1,5 +1,4 @@
 NAME			:= fractol
-NICKNAME		:= FRACTOL
 
 # Directories
 HDR_DIR			:= include
@@ -15,7 +14,11 @@ LIBFT			:= ${LIBFT_DIR}/libft.a
 MLX_DIR			:= MLX42
 MLX				:= ${MLX_DIR}/build/libmlx42.a
 
-MLX_FLAGS	:= -L ${MLX_DIR}/build -lmlx42 -lglfw -lm
+# for linux
+#MLX_FLAGS	:= -L ${MLX_DIR}/build -lmlx42 -lglfw -lm
+
+#for mac
+MLX_FLAGS	:= -L ${MLX_DIR}/build -lmlx42 -lglfw -lm -framework Cocoa -framework OpenGL -framework IOKit
 
 # Compiler flags
 CC				:= cc
@@ -32,21 +35,16 @@ SRC				:= ${addprefix ${SRC_DIR}/, ${SRC_FILES}}
 OBJ				:= ${addprefix ${OBJ_DIR}/, ${SRC_FILES:.c=.o}}
 HDR				:= ${addprefix ${HDR_DIR}/, ${HDR_FILES}}
 
-# Colours
+# Colors
 GREEN			:= \033[32;1m
-YELLOW			:= \033[33;1m
+BLUE 			:= \033[34m
 RED				:= \033[31;1m
-BOLD			:= \033[1m
-RESET			:= \033[0m
 
 # Rules
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(MLX) $(OBJ)
-	@ printf "%b%s%b" "$(YELLOW)$(BOLD)" "Compiling $(NICKNAME)..." "$(RESET)"
 	@ $(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(MLX_FLAGS) $(MLX) -o $(NAME)
-	@ printf "\t\t%b%s%b\n" "$(GREEN)$(BOLD)" "		[OK]" "$(RESET)"
-
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	@ $(CC) $(CFLAGS) $(INCL) -c $< -o $@
@@ -54,42 +52,27 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 $(OBJ_DIR):
 	@ mkdir -p $(OBJ_DIR)
 
-$(BONUS_OBJ_DIR)/%.o: $(BONUS_DIR)/%.c | $(BONUS_OBJ_DIR)
-	@ $(CC) $(CFLAGS) $(INCL) -c $< -o $@
-
-$(BONUS_OBJ_DIR):
-	@ mkdir -p $(BONUS_OBJ_DIR)
-
 $(LIBFT):
-	@ printf "%b%s%b" "$(YELLOW)$(BOLD)" "Compiling and archiving LIBFT..." "$(RESET)"
-	@ make -C $(LIBFT_DIR)														> /dev/null
-	@ printf "\t\t%b%s%b\n" "$(GREEN)$(BOLD)" "[OK]" "$(RESET)"
+	@ make -C $(LIBFT_DIR)
 
 $(MLX):
-	@ printf "%b%s%b" "$(YELLOW)$(BOLD)" "Compiling and archiving MLX42..." "$(RESET)"
-	@ cmake $(MLX_DIR) -B $(MLX_DIR)/build										> /dev/null
-	@ make -C $(MLX_DIR)/build -j4												> /dev/null
-	@ printf "\t\t%b%s%b\n" "$(GREEN)$(BOLD)" "[OK]" "$(RESET)"
-
-bonus: $(LIBFT) $(MLX) $(BONUS_OBJ)
-	@ printf "%b%s%b" "$(YELLOW)$(BOLD)" "Compiling BONUS..." "$(RESET)"
-	@ $(CC) $(CFLAGS) $(BONUS_OBJ) $(LIBFT) $(MLX_FLAGS) $(MLX) -o $(NAME)
-	@ printf "\t\t%b%s%b\n" "$(GREEN)$(BOLD)" "		[OK]" "$(RESET)"
+	@ cmake $(MLX_DIR) -B $(MLX_DIR)/build
+	@ make -C $(MLX_DIR)/build -j4
 
 clean:
-	@ echo "$(RED)$(BOLD)Cleaning LIBFT...$(RESET)"
-	@ make clean -C $(LIBFT_DIR)												> /dev/null
-	@ rm -rf $(MLX_DIR)/build											> /dev/null
+	@ echo "$(GREEN)Cleaning..."
+	@ make clean -C $(LIBFT_DIR)
+	@ rm -rf $(MLX_DIR)/build
 	@ rm -rf ${OBJ_DIR}
 
 fclean: clean
-	@ echo "$(RED)$(BOLD)Fully cleaning LIBFT...$(RESET)"
-	@ make fclean -C $(LIBFT_DIR)												> /dev/null
+	@ echo "$(RED)Fully cleaning LIBFT..."
+	@ make fclean -C $(LIBFT_DIR)
 
-	@ echo "$(RED)$(BOLD)Fully cleaning MLX42...$(RESET)"
-	@ rm -rf $(MLX_DIR)/build											> /dev/null
+	@ echo "$(RED)Fully cleaning MLX42..."
+	@ rm -rf $(MLX_DIR)/build
 
-	@ echo "$(RED)$(BOLD)Fully cleaning $(NICKNAME)...$(RESET)"
+	@ echo "$(RED)Fully cleaning Fractol"
 	@ rm -rf ${NAME}
 
 re: fclean $(NAME)
