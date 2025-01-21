@@ -14,22 +14,22 @@ LIBFT			:= ${LIBFT_DIR}/libft.a
 MLX_DIR			:= MLX42
 MLX				:= ${MLX_DIR}/build/libmlx42.a
 
-# for linux
+#For linux
 #MLX_FLAGS	:= -L ${MLX_DIR}/build -lmlx42 -lglfw -lm
 
-#for mac
+#For mac
 MLX_FLAGS	:= -L ${MLX_DIR}/build -lmlx42 -lglfw -lm -framework Cocoa -framework OpenGL -framework IOKit
 
 # Compiler flags
 CC				:= cc
-CFLAGS			:= -Wall -Werror -Wextra
+CFLAGS			:= -Wall -Werror -Wextra  -Wunreachable-code -Ofast -g
 INCL			:= -I ${HDR_DIR}/ -I ${LIBFT_DIR}/include/ -I ${MLX_DIR}/include/MLX42/
 
 # Includes
 HDR_FILES :=	fractol.h 
 
 # Files
-SRC_FILES :=	main.c 
+SRC_FILES :=	main.c utils.c parser.c init.c draw.c color.c event_listener.c
 
 SRC				:= ${addprefix ${SRC_DIR}/, ${SRC_FILES}}
 OBJ				:= ${addprefix ${OBJ_DIR}/, ${SRC_FILES:.c=.o}}
