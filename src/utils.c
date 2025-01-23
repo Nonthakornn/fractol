@@ -6,7 +6,7 @@
 /*   By: nchencha <nchencha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 09:48:18 by nchencha          #+#    #+#             */
-/*   Updated: 2025/01/21 22:50:01 by nchencha         ###   ########.fr       */
+/*   Updated: 2025/01/22 21:59:13 by nchencha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,38 +16,6 @@ void	err_msg(char *str)
 {
 	ft_putendl_fd(str, 2);
 	exit (1);
-}
-
-void	render(void *param)
-{
-	t_data *data;
-
-	data = (t_data *)param;
-	draw_image(data);
-}
-
-double	map_x(t_data *data, int x)
-{
-	double	x_min;
-	double	x_max;
-	double	range;
-
-	x_min = data->xmin;
-	x_max = data->xmax;
-	range = (x_max - x_min) / data->zoom;
-	return data->x_center + range * ((x - WIDTH / 2.0) / WIDTH);
-}
-
-double	map_y(t_data *data, int y)
-{
-	double	y_min;
-	double	y_max;
-	double	range;
-
-	y_min = data->ymin;
-	y_max = data->ymax;
-	range = (y_max - y_min) / data->zoom;
-	return data->y_center + range * ((HEIGHT / 2.0 - y) / HEIGHT);
 }
 
 bool	check_digit_dot(char c, bool *digit, bool space, int *dot_count)
@@ -68,4 +36,60 @@ bool	check_digit_dot(char c, bool *digit, bool space, int *dot_count)
 	else
 		return (false);
 	return (true);
+}
+
+static int	handle_prefix(char *str, int *sign)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] == ' ' || str[i] == '\t')
+		i++;
+	if (str[i] == '+' || str[i] == '-')
+	{
+		if (str[i] == '-')
+			*sign *= -1;
+		i++;
+	}
+	return (i);
+}
+
+static double	get_decimal(char *str, int *i, int *j)
+{
+	double	deci_num;
+
+	deci_num = 0;
+	if (str[*i] == '.')
+		(*i)++;
+	while (str[*i] && str[*i] >= '0' && str[*i] <= '9')
+	{
+		deci_num = (deci_num * 10) + (str[*i] - '0');
+		(*i)++;
+		(*j)++;
+	}
+	return (deci_num);
+}
+
+double	ft_atof(char *str)
+{
+	double	num;
+	double	deci_num;
+	int		i;
+	int		j;
+	int		sign;
+
+	num = 0;
+	deci_num = 0;
+	i = 0;
+	j = 0;
+	sign = 1;
+	i = handle_prefix(str, &sign);
+	while (str[i] && str[i] >= '0' && str[i] <= '9')
+	{
+		num = (num * 10) + (str[i] - '0');
+		i++;
+	}
+	deci_num = get_decimal(str, &i, &j);
+	num = num + (deci_num / pow(10, j));
+	return (num * sign);
 }
