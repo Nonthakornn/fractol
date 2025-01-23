@@ -1,57 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw.c                                             :+:      :+:    :+:   */
+/*   julia.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nchencha <nchencha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/21 18:07:01 by nchencha          #+#    #+#             */
-/*   Updated: 2025/01/21 21:56:16 by nchencha         ###   ########.fr       */
+/*   Created: 2025/01/22 14:12:19 by nchencha          #+#    #+#             */
+/*   Updated: 2025/01/23 20:22:34 by nchencha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fractol.h"
 
-//Mandelbrot formula: z = z^2 + c
-//For Mandelbrot we typically use |z| ≤ 2 (which is equivalent to x² + y² ≤ 4)
-static int	escape_time_mandel(double x0, double y0)
-{
-	double	x;
-	double	y;
-	double	x_temp;
-	int		iter;
+static int	escape_time_julia(double x0, double y0, t_data *data);
 
-	x = 0;
-	y = 0;
-	x_temp = 0;
-	iter = 0;
-	while (x * x + y * y <= 4 && iter < MAX_ITER)
-	{
-		x_temp = (x * x) - (y * y) + x0;
-		y = 2 * x * y + y0;
-		x = x_temp;
-		iter++;
-	}
-	return (iter);
-}
-
-void	draw_image(t_data *data)
-{
-	if (data->fractal_type == 1)
-		draw_mandelbrot(data);
-	// else if (data->fractal_type == 2)
-	// 	draw_julia(data);
-	else
-		exit(1);
-}
-
-void	draw_mandelbrot(t_data *data)
+void	draw_julia(t_data *data)
 {
 	int		x;
 	int		y;
 	double	x0;
 	double	y0;
-	int color;
+	int		color;
 
 	x = 0;
 	y = 0;
@@ -62,11 +31,36 @@ void	draw_mandelbrot(t_data *data)
 		{
 			x0 = map_x(data, x);
 			y0 = map_y(data, y);
-			data->interate = escape_time_mandel(x0, y0);
+			data->interate = escape_time_julia(x0, y0, data);
 			color = get_color(data);
 			mlx_put_pixel(data->img, x, y, color);
 			y++;
 		}
 		x++;
 	}
+}
+
+//Julia: z = z² + c, where z is variable and c is fixed
+/*
+z starts at each pixel point (x0, y0)
+c is fixed (data->r, data->i)
+*/
+static int	escape_time_julia(double x0, double y0, t_data *data)
+{
+	double	z_real;
+	double	z_img;
+	double	z_rtemp;
+	int		iter;
+
+	z_real = x0;
+	z_img = y0;
+	iter = 0;
+	while (z_real * z_real + z_img * z_img <= 4 && iter < MAX_ITER)
+	{
+		z_rtemp = (z_real * z_real) - (z_img * z_img) + data->r;
+		z_img = 2 * z_real * z_img + data->i;
+		z_real = z_rtemp;
+		iter++;
+	}
+	return (iter);
 }

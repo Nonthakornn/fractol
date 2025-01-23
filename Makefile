@@ -29,7 +29,8 @@ INCL			:= -I ${HDR_DIR}/ -I ${LIBFT_DIR}/include/ -I ${MLX_DIR}/include/MLX42/
 HDR_FILES :=	fractol.h 
 
 # Files
-SRC_FILES :=	main.c utils.c parser.c init.c draw.c color.c event_listener.c
+SRC_FILES :=	main.c utils.c parser.c init.c draw_image.c \
+				color.c event_listener.c mandelbrot.c julia.c
 
 SRC				:= ${addprefix ${SRC_DIR}/, ${SRC_FILES}}
 OBJ				:= ${addprefix ${OBJ_DIR}/, ${SRC_FILES:.c=.o}}

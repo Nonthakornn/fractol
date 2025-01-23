@@ -6,7 +6,7 @@
 /*   By: nchencha <nchencha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 02:54:45 by nchencha          #+#    #+#             */
-/*   Updated: 2025/01/23 19:50:11 by nchencha         ###   ########.fr       */
+/*   Updated: 2025/01/23 20:45:24 by nchencha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 # define WIDTH 800 
 # define HEIGHT 800 
-# define MAX_ITER 400
-# define MIN_ITER 300
+# define MAX_ITER 500 
+# define MIN_ITER 50
 # define ERR_ARGS "Invalid Input:\n\
 ./fractol mandelbrot \n\
 ./fractol julia <complex> <imaginary>\n\

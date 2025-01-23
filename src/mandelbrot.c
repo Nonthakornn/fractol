@@ -6,7 +6,7 @@
 /*   By: nchencha <nchencha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 14:01:30 by nchencha          #+#    #+#             */
-/*   Updated: 2025/01/23 18:09:39 by nchencha         ###   ########.fr       */
+/*   Updated: 2025/01/23 20:22:59 by nchencha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,11 @@ void	draw_mandelbrot(t_data *data)
 //Mandelbrot formula: z = z^2 + c
 //For Mandelbrot we typically use |z| ≤ 2 (which is equivalent to x² + y² ≤ 4)
 //x0 y0 is C constant
+//https://www.geogebra.org/m/mfewjrek
+/*
+z starts at 0 (fixed)
+c changes for each pixel (x0, y0)
+*/
 static int	escape_time_mandel(double x0, double y0)
 {
 	double	z_real;
@@ -52,7 +57,6 @@ static int	escape_time_mandel(double x0, double y0)
 
 	z_real = 0;
 	z_img = 0;
-	z_real = 0;
 	iter = 0;
 	while (z_real * z_real + z_img * z_img <= 4 && iter < MAX_ITER)
 	{

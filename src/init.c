@@ -6,7 +6,7 @@
 /*   By: nchencha <nchencha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 14:30:30 by nchencha          #+#    #+#             */
-/*   Updated: 2025/01/21 18:23:41by nchencha         ###   ########.fr       */
+/*   Updated: 2025/01/23 20:12:49 by nchencha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,11 @@ static void	init_mlx(t_data *data)
 		err_msg("Fail drawing image to window");
 }
 
-static void mandelbrot_data(t_data *data)
+static void	mandelbrot_data(t_data *data)
 {
 	data->height = HEIGHT;
-	data->width =  WIDTH;
+	data->width = WIDTH;
+	data->interate = MIN_ITER;
 	data->xmax = 1.0;
 	data->xmin = -2.0;
 	data->ymax = 1.5;
@@ -35,11 +36,9 @@ static void mandelbrot_data(t_data *data)
 	data->zoom = 1;
 	data->x_center = ((data->xmax + data->xmin) / 2);
 	data->y_center = ((data->ymax + data->ymin) / 2);
-
-	
 }
 
-static void julia_data(t_data *data)
+static void	julia_data(t_data *data, char **argv)
 {
 	data->height = HEIGHT;
 	data->width = WIDTH;
@@ -47,10 +46,14 @@ static void julia_data(t_data *data)
 	data->xmin = -2.0;
 	data->ymax = 2.0;
 	data->ymin = -2.0;
-	//Finish mandelbot first
+	data->zoom = 1;
+	data->x_center = ((data->xmax + data->xmin) / 2);
+	data->y_center = ((data->ymax + data->ymin) / 2);
+	data->r = ft_atof(argv[2]);
+	data->i = ft_atof(argv[3]);
 }
 
-void	init_fractol(t_data *data, int argc)
+void	init_fractol(t_data *data, int argc, char **argv)
 {
 	init_mlx(data);
 	if (argc == 2)
@@ -61,7 +64,7 @@ void	init_fractol(t_data *data, int argc)
 	else if (argc == 4)
 	{
 		data->fractal_type = 2;
-		julia_data(data);
+		julia_data(data, argv);
 	}
 	else
 		err_msg(ERR_ARGS);

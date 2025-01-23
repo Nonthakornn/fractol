@@ -6,7 +6,7 @@
 /*   By: nchencha <nchencha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 17:12:51 by nchencha          #+#    #+#             */
-/*   Updated: 2025/01/23 19:17:56 by nchencha         ###   ########.fr       */
+/*   Updated: 2025/01/23 20:47:10 by nchencha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,10 @@ With log10:
 At zoom = 1: MIN_ITER + log10(20) = MIN_ITER + 1.3
 At zoom = 10: MIN_ITER + log10(200) = MIN_ITER + 2.3
 At zoom = 100: MIN_ITER + log10(2000) = MIN_ITER + 3.3
+
+No zoom (zoom = 1): 50 + log10(20) = 51.3 iterations
+10x zoom: 50 + log10(200) = 52.3 iterations
+100x zoom: 50 + log10(2000) = 53.3 iterations
 */
 static void	update_zoom(t_data *data, double zoom_factor)
 {
